@@ -1,0 +1,22 @@
+<html>
+    <%- include('head.ejs') %>
+<body>
+
+    <%- include('nav.ejs') %>
+    <% for(var i=0; i<alldata.length; i++){ %>
+    
+        <center>
+            <div class="shadow-lg p-3 mb-5 mt-5 bg-white rounded text-center w-50">
+
+                <strong>Name:    </strong> <%=  alldata[i].name  %><br>
+                <strong>Email:   </strong><%=  alldata[i].email  %><br>
+                <strong>Amount:  </strong><%=  alldata[i].amount  %><br>
+            
+            </div>
+        </center>
+    <% } %>
+
+    
+    <%- include('footer.ejs') %>
+</body>
+</html>
