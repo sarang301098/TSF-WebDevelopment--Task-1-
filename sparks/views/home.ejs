@@ -1,0 +1,27 @@
+<html>
+    <%- include('head.ejs') %>
+    <style>
+
+.blinking{
+    animation:blinkingText 1.2s infinite;
+    
+}
+@keyframes blinkingText{
+    0%{     color: #000;    }
+    49%{    color: #000; }
+    60%{    color: transparent; }
+    99%{    color:transparent;  }
+    100%{   color: #000;    }
+}
+    </style>
+<body class="bg-dark">
+
+    <%- include('nav.ejs') %>
+    <div style="text-align: center; height: 40%; width: 100%;margin-top: 13%;">
+        <h4 style="color: black; margin-bottom: 20px;;">WELCOME TO THE </h4>
+       <h1>  <span class="blinking ">THE SPARKS FOUNDATION</span></h1>
+       <h4 style="color: black;margin-top: 20px;">WEB & MOBILE APP DEVELOPMENT  </h4>
+        </div>
+    <%- include('footer.ejs') %>
+</body>
+</html>
