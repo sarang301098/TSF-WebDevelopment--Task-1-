@@ -15,6 +15,7 @@
             <th scope="col">Amount</th>
             <th scope="col">VIEW</th>
             <th scope="col">ACTION</th>
+            <th scope="col">DELETE</th>
           </tr>
         </thead>
         <% for(var i=0; i<alldata.length; i++){ %>
@@ -26,6 +27,7 @@
             <td><%= alldata[i].amount  %></td>
             <td><a href="transaction/view/<%= alldata[i]._id %>"<button type="button" class="btn btn-outline-secondary"  id=<%= alldata[i]._id %>>View</button></a></td>
             <td><a href="transfer/<%= alldata[i]._id %>"<button type="button" class="btn btn-outline-secondary"  id=<%= alldata[i]._id %>>Transaction</button></a></td>
+            <td><a href="delete/<%= alldata[i]._id %>"<button type="button" class="btn btn-outline-secondary"  id=<%= alldata[i]._id %>>Delete</button></a></td>
           </tr>
           <%}%>
         </tbody>

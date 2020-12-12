@@ -9,13 +9,13 @@ var transporter = nodemailer.createTransport({
     secure: true,
    auth : {
        user : 'sarangp3010@gmail.com',
-       pass : 'pass'
+       pass : 'sarang30'
    } 
 });
 
 
 
-var connection = mongoose.connect('mongodb://localhost:27017/Bank', {useUnifiedTopology: true, useNewUrlParser: true}, (err)=>{
+var connection = mongoose.connect('mongodb+srv://root:root@banks.sqnju.mongodb.net/Bank?retryWrites=true&w=majority', {useUnifiedTopology: true, useNewUrlParser: true}, (err)=>{
     if(err){
         console.log("Error:   "+err);
     }
@@ -69,39 +69,43 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 module.exports = function(app){
-    app.get('/', (req, res)=>{
-        res.redirect('/home');
+    app.get('/', async (req, res)=>{
+        await res.redirect('/home');
     });
 
-    app.get('/home', (req, res)=>{
-        res.render('home');
+    app.get('/home', async (req, res)=>{
+        await res.render('home');
     });
 
-    app.get('/transaction',  (req, res)=>{
-        Bankdbmodel.find({}, (err, data)=>{
+    app.get('/add', async (req, res)=>{
+        await res.render('addUser');
+     });
+
+    app.get('/transaction', async (req, res)=>{
+        await Bankdbmodel.find({}, (err, data)=>{
             if(err) throw err;
             res.render('transaction', {alldata : data});
-        }); 
+        }).sort({ name : 1 }); 
     });
 
-    app.get('/transfer/:id', (req, res)=>{
+    app.get('/transfer/:id', async (req, res)=>{
      
-        Bankdbmodel.find({ _id : req.params.id}, (err, data)=>{
+        await Bankdbmodel.find({ _id : req.params.id}, (err, data)=>{
             if(err) throw err;
             res.render('transfer', {alldata : data});
         }); 
     });
     
-    app.post('/transaction', urlencodedParser, (req, res)=>{
-        Bankdbmodel.find({ _id : req.body.id}, (err, data)=>{
+    app.post('/transaction', urlencodedParser, async (req, res)=>{
+       await Bankdbmodel.find({ _id : req.body.id}, async (err, data)=>{
             if(err) throw err;
-            Bankdbmodel.updateOne({ _id : data[0]._id }, {$set : { amount : parseInt(data[0].amount)-parseInt(req.body.amount)}},(err, res)=>{
+           await Bankdbmodel.updateOne({ _id : data[0]._id }, {$set : { amount : parseInt(data[0].amount)-parseInt(req.body.amount)}},(err, res)=>{
                 if (err) throw err;
             });
         });
-        Bankdbmodel.find({ name : req.body.name}, (err, data)=>{
+       await Bankdbmodel.find({ name : req.body.name}, async (err, data)=>{
             if(err) throw err;
-            Bankdbmodel.updateOne({ _id : data[0]._id }, {$set : { amount : parseInt(data[0].amount)+parseInt(req.body.amount)}},(err, res)=>{
+            await Bankdbmodel.updateOne({ _id : data[0]._id }, {$set : { amount : parseInt(data[0].amount)+parseInt(req.body.amount)}},(err, res)=>{
                 if (err) throw err;
             });
         });
@@ -112,7 +116,7 @@ module.exports = function(app){
             subject : 'The Sparks Foundation',
             html : `<h1>${req.body.amount}</h1>Rs is Successfully Transfer to <h1>${req.body.name}</h1> `,  
         };
-        transporter.sendMail(mailOption, (err, info)=>{
+      await transporter.sendMail(mailOption, (err, info)=>{
             if(err){
                 console.log("EMAIL"+err);
             }
@@ -131,5 +135,34 @@ module.exports = function(app){
             res.render('view', {alldata : data});
         }); 
     });
+
+    app.post('/add', urlencodedParser, async (req, res) => {
+        
+        let data = JSON.parse(JSON.stringify(req.body));
+        console.log(data);
+        var adddata = new Bankdbmodel({
+            name : data.name,
+            email : data.email,
+            amount : Number(data.amount),
+            active : Boolean(data.active)
+        });
+
+        await adddata.save();
+       
+        res.redirect('/transaction');
+    });
+
+    app.get('/delete/:id', async (req,res) => {
+        
+        await Bankdbmodel.remove({ _id : req.params.id }, async (err, res) => {
+            if(err){
+                console.log(err);
+            }
+        });
+
+        res.redirect('/transaction');
+    });
+
+    
 
 }
