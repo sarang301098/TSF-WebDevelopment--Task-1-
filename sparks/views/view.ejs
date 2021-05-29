@@ -1,24 +1,31 @@
 <html>
-    <%- include('head.ejs') %>
-<body>
+<%- include('head.ejs') %>
 
-    <%- include('nav.ejs') %>
-    <% for(var i=0; i<alldata.length; i++){ %>
-    
-        <center>
-            <div class="shadow-lg p-3 mb-5 mt-5 bg-white rounded text-center w-50">
-<h1>THE SPARKS FOUNDATION</h1>
-<hr>
-                <h3><%=  alldata[i].name  %></h3> 
-               <h3><%=  alldata[i].email  %></h3><br>
-               <h3><%=  alldata[i].amount  %></h3><br>
-                <a href="/transaction"><button type="button" class="btn btn-primary mb-2">Back</button></a>
-            </div>
-            
-        </center>
-    <% } %>
+    <body>
 
-    
-    <%- include('footer.ejs') %>
-</body>
+        <%- include('nav.ejs') %>
+            <% for(var i=0; i<alldata.length; i++){ %>
+
+                <center>
+                    <div class="shadow-lg p-3 mb-5 mt-5 bg-white rounded text-center w-50">
+                        <h1>THE SPARKS FOUNDATION</h1>
+                        <hr>
+                        <h3>
+                            <%= alldata[i].name %>
+                        </h3>
+                        <h3>
+                            <%= alldata[i].email %>
+                        </h3><br>
+                        <h3>
+                            <%= alldata[i].amount %>
+                        </h3><br>
+                        <a href="/transaction"><button type="button" class="btn btn-primary mb-2">Back</button></a>
+                    </div>
+
+                </center>
+                <% } %>
+
+                    <%- include('footer.ejs') %>
+    </body>
+
 </html>
